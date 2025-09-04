@@ -1,38 +1,36 @@
 ---
 // src/pages/print.astro
 import Base from "../layouts/Base.astro";
-const query = Astro.url.searchParams.get('ids');
-const idsFromQuery = query ? query.split(',').filter(Boolean) : [];
-// We'll fetch on client since no runtime server — fallback to localStorage if needed.
+const base = import.meta.env.BASE_URL;
 ---
 <Base title="Impressão">
   <h1 class="no-print">Impressão – Fridge Magnets</h1>
-  <div id="print-root" class="print-grid"></div>
+  <div id="print-root"></div>
 
-  <script is:inline>
-    (async function(){
+  <!-- Use define:vars instead of {JSON.stringify(base)} -->
+  <script is:inline define:vars={{ base }}>
+    (async function () {
+      const BASE = base;
       const params = new URLSearchParams(location.search);
       const ids = (params.get('ids') || '').split(',').filter(Boolean);
-      const selected = ids.length ? ids : JSON.parse(localStorage.getItem('selectedRecipes')||'[]');
-      const res = await fetch('/api/recipes.json');
+      let selected = ids.length ? ids : JSON.parse(localStorage.getItem('selectedRecipes')||'[]');
+
+      const res = await fetch(BASE + 'api/recipes.api');
       const all = await res.json();
       const byId = new Map(all.map((r)=>[r.id, r]));
-      const chosen = selected.map(id => byId.get(id)).filter(Boolean);
+      const chosen = selected.map((id)=>byId.get(id)).filter(Boolean);
 
       const root = document.getElementById('print-root');
-      if (!root) return;
-
       root.innerHTML = chosen.map((r)=>`
         <section class="magnet">
           <h3>${r.title}</h3>
-          ${r.age_tags?.length ? `<div>${r.age_tags.map((a:string)=>`<span class="badge">${a}</span>`).join(' ')}</div>` : ''}
+          ${r.age_tags?.length ? `<div>${r.age_tags.map((a)=>`<span style="font-size:10pt;border:1px solid #ddd;border-radius:999px;padding:2px 6px;margin-right:4px;">${a}</span>`).join(' ')}</div>` : ''}
           <div><b>Ingredientes:</b> ${(r.ingredients||[]).join(', ')}</div>
-          ${r.steps?.length ? `<ol>${r.steps.map((s:string)=>`<li>${s}</li>`).join('')}</ol>` : ''}
-          ${r.notes?.length ? `<ul>${r.notes.map((n:string)=>`<li>${n}</li>`).join('')}</ul>` : ''}
+          ${r.steps?.length ? `<ol>${r.steps.map((s)=>`<li>${s}</li>`).join('')}</ol>` : ''}
+          ${r.notes?.length ? `<ul>${r.notes.map((n)=>`<li>${n}</li>`).join('')}</ul>` : ''}
         </section>
       `).join('');
 
-      // auto-open print dialog if opened with ids
       if (ids.length) setTimeout(()=>window.print(), 300);
     })();
   </script>

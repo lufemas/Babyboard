@@ -12,7 +12,9 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.4",
     "@astrojs/react": "^4.3.0",
+    "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.13.5",
+    "tailwindcss": "^4.1.13",
     "zod": "^3.25.76"
   }
 }

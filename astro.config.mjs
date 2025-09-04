@@ -2,9 +2,16 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
+import tailwind from "@tailwindcss/vite";
 
+// const isProd = process.env.NODE_ENV === 'production';
+// const isPages = !!process.env.GITHUB_PAGES; // we'll set this in the Action
+// console.log('isProd: ', isProd);
+// console.log('isPages: ', isPages);
 export default defineConfig({
-  integrations: [mdx(), react()],
   output: 'static',
-  // site: 'https://<your-username>.github.io/baby-recipes',
+  integrations: [mdx(), react()],
+  vite: {    plugins: [tailwind()]  },
+  // site:  isProd && isPages ? 'https://lufemas.github.io' : undefined,
+  // base:  isProd && isPages ? '/Babyboard/' : '/',   // '/' in dev
 });
