@@ -1,0 +1,43 @@
+# .github/workflows/deploy.yml
+name: Build & Deploy (Pages) + PR Check
+
+on:
+  push:
+    branches: [ main ]     # deploy after merge
+  pull_request:            # build on PRs (no deploy)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  pr-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'npm' }
+      - run: npm ci || npm i
+      - run: npm run build    # validates content schemas
+
+  build:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'npm' }
+      - run: npm ci || npm i
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: ./dist }
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/deploy-pages@v4
