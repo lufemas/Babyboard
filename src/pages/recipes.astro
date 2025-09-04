@@ -1,25 +1,12 @@
 ---
-// src/pages/recipes.astro
 import Base from "../layouts/Base.astro";
 import RecipesExplorer from "../components/ui/RecipesExplorer.tsx";
+const base = import.meta.env.BASE_URL;
 ---
 <Base title="Receitas">
-  <header style="margin-bottom:1rem">
-    <h1>Receitas</h1>
-    <p>Filtre por ingredientes e idade. Selecione receitas para impressão.</p>
+  <header class="mb-4">
+    <h1 class="text-2xl font-bold text-emerald-700">Receitas</h1>
+    <p class="text-slate-600">Filtre por ingredientes e idade. Selecione receitas para impressão.</p>
   </header>
-
-  <section style="display:grid; grid-template-columns: 280px 1fr; gap:1rem;">
-    <!-- Left column: the island renders toolbar + grid, so we just mount it full-width -->
-    <!-- If you want a real sticky sidebar later, we can split the island in two. -->
-    <div>
-      <div class="card">
-        <h3>Filtros</h3>
-        <p style="margin:0">Use os checkboxes no topo da lista para filtrar.</p>
-      </div>
-    </div>
-    <div>
-      <RecipesExplorer client:load />
-    </div>
-  </section>
+  <RecipesExplorer client:load base={base} />
 </Base>
