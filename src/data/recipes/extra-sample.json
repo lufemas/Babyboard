@@ -1,0 +1,18 @@
+{
+  "title": "Purê de Frango + Cenoura",
+  "age_tags": ["5-6m"],
+  "domain": "food-intro",
+  "ingredients": ["chicken", "carrot", "olive-oil"],
+  "ingredient_groups": [
+    { "group": "protein", "items": ["chicken"] },
+    { "group": "veg", "items": ["carrot"] },
+    { "group": "fat", "items": ["olive-oil"] }
+  ],
+  "steps": [
+    "Cozinhe frango e cenoura até ficarem macios.",
+    "Bata com um pouco da água do cozimento.",
+    "Finalize com azeite."
+  ],
+  "notes": ["Introduza novos alimentos com intervalo de 2–3 dias."],
+  "print": { "size": "small" }
+}

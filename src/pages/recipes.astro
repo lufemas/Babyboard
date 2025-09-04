@@ -1,0 +1,9 @@
+---
+// src/pages/recipes.astro
+import Base from "../layouts/Base.astro";
+import RecipesExplorer from "../components/ui/RecipesExplorer.tsx";
+---
+<Base title="Receitas">
+  <h1>Receitas</h1>
+  <RecipesExplorer client:load />
+</Base>

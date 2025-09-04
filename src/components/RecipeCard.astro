@@ -1,0 +1,22 @@
+---
+// src/components/RecipeCard.astro
+const { recipe, selectedIds = [], onToggleId } = Astro.props;
+// Minimal markup; island handles selection state through buttons/attrs
+---
+<article class="card" data-id={recipe.id}>
+  <h3>{recipe.title}</h3>
+  <div style="display:flex; gap:.35rem; flex-wrap:wrap; margin:.25rem 0 .5rem">
+    {recipe.age_tags?.map((t:string) => <span class="badge">{t}</span>)}
+  </div>
+  <p><b>Ingredientes:</b> {recipe.ingredients?.join(", ")}</p>
+  {recipe.steps && recipe.steps.length > 0 && (
+    <ol>
+      {recipe.steps.map((s:string) => <li>{s}</li>)}
+    </ol>
+  )}
+  <button class="button"
+    data-action="toggle"
+    aria-pressed={selectedIds.includes(recipe.id) ? 'true' : 'false'}>
+    {selectedIds.includes(recipe.id) ? 'Remover da impressão' : 'Adicionar para imprimir'}
+  </button>
+</article>

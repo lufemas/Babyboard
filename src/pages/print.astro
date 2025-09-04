@@ -1,0 +1,39 @@
+---
+// src/pages/print.astro
+import Base from "../layouts/Base.astro";
+const query = Astro.url.searchParams.get('ids');
+const idsFromQuery = query ? query.split(',').filter(Boolean) : [];
+// We'll fetch on client since no runtime server — fallback to localStorage if needed.
+---
+<Base title="Impressão">
+  <h1 class="no-print">Impressão – Fridge Magnets</h1>
+  <div id="print-root" class="print-grid"></div>
+
+  <script is:inline>
+    (async function(){
+      const params = new URLSearchParams(location.search);
+      const ids = (params.get('ids') || '').split(',').filter(Boolean);
+      const selected = ids.length ? ids : JSON.parse(localStorage.getItem('selectedRecipes')||'[]');
+      const res = await fetch('/api/recipes.json');
+      const all = await res.json();
+      const byId = new Map(all.map((r)=>[r.id, r]));
+      const chosen = selected.map(id => byId.get(id)).filter(Boolean);
+
+      const root = document.getElementById('print-root');
+      if (!root) return;
+
+      root.innerHTML = chosen.map((r)=>`
+        <section class="magnet">
+          <h3>${r.title}</h3>
+          ${r.age_tags?.length ? `<div>${r.age_tags.map((a:string)=>`<span class="badge">${a}</span>`).join(' ')}</div>` : ''}
+          <div><b>Ingredientes:</b> ${(r.ingredients||[]).join(', ')}</div>
+          ${r.steps?.length ? `<ol>${r.steps.map((s:string)=>`<li>${s}</li>`).join('')}</ol>` : ''}
+          ${r.notes?.length ? `<ul>${r.notes.map((n:string)=>`<li>${n}</li>`).join('')}</ul>` : ''}
+        </section>
+      `).join('');
+
+      // auto-open print dialog if opened with ids
+      if (ids.length) setTimeout(()=>window.print(), 300);
+    })();
+  </script>
+</Base>

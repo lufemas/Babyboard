@@ -1,0 +1,88 @@
+/* src/styles/base.css */
+:root {
+  --accent: #2e8b57;
+}
+body {
+  font-family: system-ui, Arial, sans-serif;
+  color: #333;
+  margin: 0;
+}
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+h1,
+h2,
+h3 {
+  color: var(--accent);
+}
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.button {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.button.filled {
+  background: var(--accent);
+  color: #fff;
+}
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: #f1f5f9;
+}
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  main {
+    max-width: 100%;
+    padding: 0;
+  }
+  .print-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 70mm);
+    gap: 8mm;
+    justify-content: center;
+  }
+  .magnet {
+    width: 70mm;
+    height: 90mm;
+    border: 1px solid #000;
+    border-radius: 6mm;
+    padding: 6mm;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 4mm;
+    font-size: 11pt;
+  }
+  .magnet h3 {
+    margin: 0 0 2mm 0;
+    font-size: 12pt;
+  }
+}
