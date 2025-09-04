@@ -1,6 +1,7 @@
 ---
 // src/layouts/Base.astro
 import "../styles/base.css";
+import Nav from "../components/Nav.astro";
 const { title = "Baby Recipes" } = Astro.props;
 ---
 <html lang="pt-BR">
@@ -10,6 +11,7 @@ const { title = "Baby Recipes" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
+    <Nav />
     <main>
       <slot />
     </main>
