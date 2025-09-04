@@ -23,6 +23,8 @@ jobs:
       - run: npm run build
 
   build:
+    env:
+      GITHUB_PAGES: true
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
